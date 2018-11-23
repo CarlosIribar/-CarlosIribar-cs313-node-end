@@ -110,7 +110,7 @@ function getBooksFromDb(callback) {
   
   const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name FROM books a INNER JOIN accounts b ON b.id = UserId";
 
-	pool.query(sql, params, function(err, result) {
+	pool.query(sql, null, function(err, result) {
 		// If an error occurred...
 		if (err) {
 			console.log("Error in query: ")
