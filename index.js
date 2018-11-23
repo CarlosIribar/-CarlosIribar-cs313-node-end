@@ -28,6 +28,9 @@ app.get('/book', function(request, response) {
 	getBook(request, response);
 });
 
+app.get('/books', function(request, response) {
+	getBooks(request, response);
+});
 
 
 
@@ -54,6 +57,17 @@ function getBook(request, response) {
 	});
 }
 
+function getBooks(request, response) {
+
+	getBooksFromDb(id, function(error, result) {
+		if (error || result == null || result.length != 1) {
+			response.status(500).json({success: false, data: error});
+		} else {
+			response.status(200).json(result);
+		}
+	});
+}
+
 // This function gets a person from the DB.
 // By separating this out from the handler above, we can keep our model
 // logic (this function) separate from our controller logic (the getPerson function)
@@ -62,7 +76,7 @@ function getBookFromDb(id, callback) {
 
 	// Set up the SQL that we will use for our query. Note that we can make
 	// use of parameter placeholders just like with PHP's PDO.
-	var sql = "SELECT id, Name, Author, ISBN, UserId FROM books WHERE id = $1::int";
+	var sql = "SELECT id, Name, Author, ISBN, UserId, b.User FROM books INNER JOIN accounts b ON b.id = UserId WHERE id = $1::int";
 	// We now set up an array of all the parameters we will pass to fill the
 	// placeholder spots we left in the query.
 	var params = [id];
@@ -90,3 +104,30 @@ function getBookFromDb(id, callback) {
 	});
 
 } // end of getPersonFromDb
+
+function getBooksFromDb(id, callback) {
+	console.log("Getting books from DB with id: " + id);
+  
+  const sql = "SELECT id, Name, Author, ISBN, UserId, b.User FROM books INNER JOIN accounts b ON b.id = UserId";
+
+	pool.query(sql, params, function(err, result) {
+		// If an error occurred...
+		if (err) {
+			console.log("Error in query: ")
+			console.log(err);
+			callback(err, null);
+		}
+
+		// Log this to the console for debugging purposes.
+		console.log("Found result: " + JSON.stringify(result.rows));
+
+
+		// When someone else called this function, they supplied the function
+		// they wanted called when we were all done. Call that function now
+		// and pass it the results.
+
+		// (The first parameter is the error variable, so we will pass null.)
+		callback(null, result.rows);
+	});
+
+}
