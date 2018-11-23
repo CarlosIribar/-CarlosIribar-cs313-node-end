@@ -57,7 +57,7 @@ function getBook(request, response) {
 // This function gets a person from the DB.
 // By separating this out from the handler above, we can keep our model
 // logic (this function) separate from our controller logic (the getPerson function)
-function getPersonFromDb(id, callback) {
+function getBookFromDb(id, callback) {
 	console.log("Getting person from DB with id: " + id);
 
 	// Set up the SQL that we will use for our query. Note that we can make
