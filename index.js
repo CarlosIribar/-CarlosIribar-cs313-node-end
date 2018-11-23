@@ -106,7 +106,7 @@ function getBookFromDb(id, callback) {
 } // end of getPersonFromDb
 
 function getBooksFromDb(callback) {
-	console.log("Getting books from DB with id: " + id);
+	console.log("Getting books from DB with id: ");
   
   const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name FROM books a INNER JOIN accounts b ON b.id = UserId";
 
