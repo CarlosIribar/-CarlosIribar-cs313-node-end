@@ -59,7 +59,7 @@ function getBook(request, response) {
 
 function getBooks(request, response) {
 
-	getBooksFromDb(id, function(error, result) {
+	getBooksFromDb(function(error, result) {
 		if (error || result == null || result.length != 1) {
 			response.status(500).json({success: false, data: error});
 		} else {
@@ -105,7 +105,7 @@ function getBookFromDb(id, callback) {
 
 } // end of getPersonFromDb
 
-function getBooksFromDb(id, callback) {
+function getBooksFromDb(callback) {
 	console.log("Getting books from DB with id: " + id);
   
   const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name FROM books a INNER JOIN accounts b ON b.id = UserId";
