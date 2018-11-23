@@ -60,7 +60,7 @@ function getBook(request, response) {
 function getBooks(request, response) {
 
 	getBooksFromDb(function(error, result) {
-		if (error || result == null || result.length != 1) {
+		if (error || result == null ) {
 			response.status(500).json({success: false, data: error});
 		} else {
 			response.status(200).json(result);
