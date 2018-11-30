@@ -6,12 +6,15 @@
 
 <body>
 
-  <% include ../partials/nav.ejs %>
+  
 
 <div class="container">
-  index
+  <div id="app">
+    {{ message }}
+  </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<% include ../../public/app.js %>
 </body>
 </html>
