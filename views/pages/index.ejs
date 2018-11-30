@@ -2,15 +2,41 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+  
 </head>
 
 <body>
-
+  <style>
+    table {
+      margin-top: 30px;
+    }
+  
+    th,
+    td {
+      padding: 3px;
+    }
+  </style>
   
 
 <div class="container">
   <div id="app">
     {{ message }}
+    <table>
+      <tr>
+      <th>Name</th>
+      <th>Author</th>
+      <th>ISBN</th>
+      <th>Owner</th>
+      <th>Actions</th>
+      </tr>
+      <tr v-for="row in books">
+        <td><a href=""> {{row['name']}} </a></td>
+        <td>{{row['author']}}</td>
+        <td>{{row['isbn']}}</td>
+        <td>{{row['user']}}</td>
+        <td><button onClick=''> Remove </button></td>
+        <td><button onClick=''> Edit </button></td>
+      </tr>
   </div>
 </div>
 

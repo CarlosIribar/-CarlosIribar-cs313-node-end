@@ -7,7 +7,7 @@ var app = new Vue({
     methods: {
         getBooks(resource) {
             this.$http.get('/books').then((response) => {
-                this.books = response
+                this.books = response.body
             });
         }
     },
