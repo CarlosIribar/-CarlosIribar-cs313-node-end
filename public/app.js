@@ -6,7 +6,7 @@ var app = new Vue({
     },
     methods: {
         getBooks(resource) {
-            this.$http.get('/books').then((response) {
+            this.$http.get('/books').then((response) => {
                 this.books = response
             });
         }
@@ -14,4 +14,5 @@ var app = new Vue({
     beforeMount(){
         this.getBooks()
     },
-  })
+
+})
