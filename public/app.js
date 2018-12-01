@@ -1,16 +1,3 @@
-const routes = [
-    { path: '/', component: books },
-]
-
-const router = new VueRouter({
-    routes // short for `routes: routes`
-})
-
-const app = new Vue({
-    router
-}).$mount('#app')
-
-
 // var app = new Vue({
 //     el: '#app',
 //     data: {
@@ -65,3 +52,15 @@ const books = Vue.component('button-counter', {
         this.getBooks()
     }
   })
+
+const routes = [
+    { path: '/', component: books },
+]
+
+const router = new VueRouter({
+    routes // short for `routes: routes`
+})
+
+const app = new Vue({
+    router
+}).$mount('#app')
