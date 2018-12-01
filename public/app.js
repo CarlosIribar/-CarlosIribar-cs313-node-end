@@ -76,7 +76,7 @@ const book = Vue.component('book', {
         </div>`,
     methods: {
         getBook() {
-            this.$http.get('/book', {id: this.id}).then((response) => {
+            this.$http.get('/book',  {params: {id: this.id}}).then((response) => {
                 this.book = response.body
             });
         }
