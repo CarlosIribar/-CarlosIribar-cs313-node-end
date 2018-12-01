@@ -82,7 +82,7 @@ function getBookFromDb(id, callback) {
 
 	// Set up the SQL that we will use for our query. Note that we can make
 	// use of parameter placeholders just like with PHP's PDO.
-	var sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name FROM books a INNER JOIN accounts b ON b.id = UserId WHERE a.id = $1::int";
+	var sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId WHERE a.id = $1::int";
 	// We now set up an array of all the parameters we will pass to fill the
 	// placeholder spots we left in the query.
 	var params = [id];
