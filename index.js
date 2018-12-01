@@ -108,7 +108,7 @@ function getBookFromDb(id, callback) {
 function getBooksFromDb(callback) {
 	console.log("Getting books from DB with id: ");
   
-  const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name FROM books a INNER JOIN accounts b ON b.id = UserId";
+  const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId";
 
 	pool.query(sql, null, function(err, result) {
 		// If an error occurred...
