@@ -58,7 +58,7 @@ const book = Vue.component('book', {
     props: ['id'],
     data: function () {
         return {
-            book: null
+            book: {}
         }
     },
     template:`<div>
@@ -72,7 +72,7 @@ const book = Vue.component('book', {
         {{book['isbn']}}<br>
         <b>Owner:</b> 
         {{book['user']}}<br>
-        <img height='300px' width='200px' src="{{book['cover']}}"/><br>
+        <img height='300px' width='200px' :src="book['cover']"/><br>
         </div>`,
     methods: {
         getBook() {
