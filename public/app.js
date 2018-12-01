@@ -54,7 +54,7 @@ const books = Vue.component('books', {
     }
 })
 
-const books = Vue.component('book', {
+const book = Vue.component('book', {
     props: ['id'],
     data: function () {
         return {
@@ -88,7 +88,7 @@ const books = Vue.component('book', {
 
 const routes = [
     { path: '/', component: books },
-    { path: '/book/:id', component: books, props: true }
+    { path: '/book/:id', component: book, props: true }
 ]
 
 const router = new VueRouter({
