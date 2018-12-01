@@ -58,26 +58,26 @@ const book = Vue.component('book', {
     props: ['id'],
     data: function () {
         return {
-            book: []
+            book: null
         }
     },
     template:`<div>
         <a href="/books.php"> Back to Book List </a>
         <h1>Book Detail</h1>
         <b>Name:</b>
-        {{$row['name']}}<br>
+        {{book['name']}}<br>
         <b>Author:</b>
-        {{$row['author']}}<br>
+        {{book['author']}}<br>
         <b>ISBN:</b> 
-        {{$row['isbn']}}<br>
+        {{book['isbn']}}<br>
         <b>Owner:</b> 
-        {{$row['user']}}<br>
-        <img height='300px' width='200px' src="{{$row['cover']}}"/><br>
+        {{book['user']}}<br>
+        <img height='300px' width='200px' src="{{book['cover']}}"/><br>
         </div>`,
     methods: {
         getBook() {
             this.$http.get('/book', {id: this.id}).then((response) => {
-                this.books = response.body
+                this.book = response.body
             });
         }
     },
