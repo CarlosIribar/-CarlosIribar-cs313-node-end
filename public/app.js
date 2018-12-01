@@ -33,7 +33,7 @@ const books = Vue.component('books', {
         <th>Actions</th>
         </tr>
         <tr v-for="row in books">
-            <td> <router-link :to="{path: '/book/:id', params:{id: row[id]}}">{{row['name']}}</router-link></td>
+            <td> <router-link :to="'/book/' + row['id']">{{row['name']}}</router-link></td>
             <td>{{row['author']}}</td>
             <td>{{row['isbn']}}</td>
             <td>{{row['user']}}</td>
