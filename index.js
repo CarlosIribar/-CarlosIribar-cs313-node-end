@@ -4,12 +4,18 @@ const PORT = process.env.PORT || 5000;
 const { Pool } = require("pg"); 
 const connectionString = process.env.DATABASE_URL;
 
-const app = express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
+const app = express();
 
+
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
+app.use(express.static(path.join(__dirname, 'public')))
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+app.get('/', (req, res) => res.render('pages/index'))
 app.set('port', (process.env.PORT || 5000));
 
 // Start the server running
