@@ -43,7 +43,7 @@ const book = Vue.component('book', {
         }
     },
     template:`<div>
-        <router-link :to="/">Back to Book List</router-link>
+        <router-link to="/">Back to Book List</router-link>
         <h1>Book Detail</h1>
         <b>Name:</b>
         {{book['name']}}<br>
