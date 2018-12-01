@@ -17,10 +17,14 @@
 
 // })
 
-const books = Vue.component('button-counter', {
+const books = Vue.component('books', {
     data: {
-        message: 'Hello Vue!',
-        books: []
+        function () {
+            return {
+                message: 'Hello Vue!',
+                books: []
+            }
+        },
     },
     template:`<div>
         {{ message }}
