@@ -1,22 +1,3 @@
-// var app = new Vue({
-//     el: '#app',
-//     data: {
-//       message: 'Hello Vue!',
-//       books: []
-//     },
-//     methods: {
-//         getBooks(resource) {
-//             this.$http.get('https://tranquil-anchorage-56858.herokuapp.com/books').then((response) => {
-//                 this.books = response.body
-//             });
-//         }
-//     },
-//     beforeMount(){
-//         this.getBooks()
-//     },
-
-// })
-
 const books = Vue.component('books', {
     data: function () {
         return {
@@ -62,7 +43,7 @@ const book = Vue.component('book', {
         }
     },
     template:`<div>
-        <a href="/books.php"> Back to Book List </a>
+        <router-link :to="/">Back to Book List</router-link>
         <h1>Book Detail</h1>
         <b>Name:</b>
         {{book['name']}}<br>
@@ -92,7 +73,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    routes // short for `routes: routes`
+    routes
 })
 
 const app = new Vue({
