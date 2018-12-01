@@ -18,13 +18,11 @@
 // })
 
 const books = Vue.component('books', {
-    data: {
-        function () {
-            return {
-                message: 'Hello Vue!',
-                books: []
-            }
-        },
+    data: function () {
+        return {
+            message: 'Hello Vue!',
+            books: []
+        }
     },
     template:`<div>
         {{ message }}
