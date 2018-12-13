@@ -18,7 +18,7 @@ const books = Vue.component('books', {
             <td>{{row['author']}}</td>
             <td>{{row['isbn']}}</td>
             <td>{{row['user']}}</td>
-            <td><button onClick=''> Remove </button></td>
+            <td><button v-on:click=removeBook({{row['id']}})> Remove </button></td>
             <td><button onClick=''> Edit </button></td>
         </tr>
         </table>
@@ -28,7 +28,15 @@ const books = Vue.component('books', {
             this.$http.get('/books').then((response) => {
                 this.books = response.body
             });
+        },
+        removeBooks(id){
+            this.$http.get('/removeBooks', {params: {id: id}}).then((response) => {
+                console.log('removeBook');
+                this.books = this.books.filter((item)=> {return item.id !== id });
+
+            });
         }
+        
     },
     beforeMount(){
         this.getBooks()
