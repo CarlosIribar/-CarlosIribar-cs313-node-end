@@ -18,7 +18,7 @@ const books = Vue.component('books', {
             <td>{{row['author']}}</td>
             <td>{{row['isbn']}}</td>
             <td>{{row['user']}}</td>
-            <td><button v-on:click="removeBook({{row['id']}})"> Remove </button></td>
+            <td><button @click="removeBook(row['id'])"> Remove </button></td>
             <td><button onClick=''> Edit </button></td>
         </tr>
         </table>
