@@ -40,6 +40,10 @@ app.post('/removeBook', function(request, response) {
 	removeBook(request, response);
 });
 
+app.post('/addBook', function(request, response) {
+	removeBook(request, response);
+});
+
 app.get('/getUsers', function(request, response) {
 	getUsers(request, response);
 });
@@ -95,6 +99,25 @@ function removeBook(request, response) {
 			response.status(500).json({success: false, data: error});
 		} else {
 			response.status(200).json({success: true, data: 'Element removed'});
+		}
+	});
+}
+
+function addBook(request, response) {
+	// First get the person's id
+	console.log(request.body);
+	var book = request.body.book
+
+	console.log(book);
+	addBookFromDB(book, function(error, result) {
+		// This is the callback function that will be called when the DB is done.
+		// The job here is just to send it back.
+
+		// Make sure we got a row with the person, then prepare JSON to send back
+		if (error) {
+			response.status(500).json({success: false, data: error});
+		} else {
+			response.status(200).json({success: true, data: 'Element added'});
 		}
 	});
 }
@@ -225,6 +248,34 @@ function removeBookFromDB(id, callback) {
 
 }
 
+function addBookFromDB(book, callback) {
+	console.log("add book person from DB with id: " + book.name);
+
+	// Set up the SQL that we will use for our query. Note that we can make
+	// use of parameter placeholders just like with PHP's PDO.
+	const sql = 'INSERT INTO books(Name, Author, ISBN, Cover, UserId)  VALUES($1::int, $1::int, $2::int, :$3::int, $4::int)';
+
+	const sql = 'DELETE FROM books WHERE id=$1::int';
+	// We now set up an array of all the parameters we will pass to fill the
+	// placeholder spots we left in the query.
+	var params = [book.id, book.author, book.isbn, book.cover, book.owner];
+
+	// This runs the query, and then calls the provided anonymous callback function
+	// with the results.
+	pool.query(sql, params, function(err, result) {
+		console.log('adding book')
+		// If an error occurred...
+		if (err) {
+			console.log("Error in query: ")
+			console.log(err);
+			callback(err, null);
+		}
+
+		callback(false, {});
+	});
+	
+
+}
 function getUsersFromDb(callback) {
 	console.log("Getting users from DB with ");
   

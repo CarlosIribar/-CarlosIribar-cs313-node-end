@@ -120,9 +120,9 @@ const addBook = Vue.component('addBook', {
     methods: {
         addBook() {
             console.log(this.book);
-            // this.$http.get('/addBook',  {params: {id: this.id}}).then((response) => {
-            //     this.book = response.body
-            // });
+            this.$http.put('/addBook', {book: this.book}).then((response) => {
+                console.log(response);
+            });
         },
         getUsers() {
             this.$http.get('/getUsers').then((response) => {
