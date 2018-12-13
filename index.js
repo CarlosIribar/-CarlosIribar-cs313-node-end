@@ -196,7 +196,7 @@ function removeBookFromDB(id, callback) {
 			// and pass it the results.
 	
 			// (The first parameter is the error variable, so we will pass null.)
-			callback(false, {}});
+			callback(false, {});
 		});
 	});
 	
