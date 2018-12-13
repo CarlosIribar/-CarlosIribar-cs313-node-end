@@ -135,7 +135,6 @@ const routes = [
     { path: '/book/:id', component: book, props: true },
     { path: '/addBook', component: addBook, props: true }
 ]
-]
 
 
 const router = new VueRouter({
