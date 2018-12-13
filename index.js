@@ -78,6 +78,7 @@ function getBooks(request, response) {
 
 function removeBook(request, response) {
 	// First get the person's id
+	console.log(request.body);
 	var id = request.body.id
 
 	console.log(id);
