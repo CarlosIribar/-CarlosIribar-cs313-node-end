@@ -164,6 +164,7 @@ function removeBookFromDB(id, callback) {
 
 	// Set up the SQL that we will use for our query. Note that we can make
 	// use of parameter placeholders just like with PHP's PDO.
+	const sql1 = 'DELETE FROM lectureprogress WHERE BookId=$1::int';
 	const sql = 'DELETE FROM books WHERE id=$1::int';
 	// We now set up an array of all the parameters we will pass to fill the
 	// placeholder spots we left in the query.
@@ -171,7 +172,7 @@ function removeBookFromDB(id, callback) {
 
 	// This runs the query, and then calls the provided anonymous callback function
 	// with the results.
-	pool.query(sql, params, function(err, result) {
+	pool.query(sql1, params, function(err, result) {
 		// If an error occurred...
 		if (err) {
 			console.log("Error in query: ")
@@ -179,13 +180,23 @@ function removeBookFromDB(id, callback) {
 			callback(err, null);
 		}
 
-
-		// When someone else called this function, they supplied the function
-		// they wanted called when we were all done. Call that function now
-		// and pass it the results.
-
-		// (The first parameter is the error variable, so we will pass null.)
-		callback(null, result.rows);
+		pool.query(sql, params, function(err, result) {
+			// If an error occurred...
+			if (err) {
+				console.log("Error in query: ")
+				console.log(err);
+				callback(err, null);
+			}
+	
+	
+			// When someone else called this function, they supplied the function
+			// they wanted called when we were all done. Call that function now
+			// and pass it the results.
+	
+			// (The first parameter is the error variable, so we will pass null.)
+			callback(null);
+		});
 	});
+	
 
 }
