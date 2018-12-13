@@ -104,7 +104,7 @@ const addBook = Vue.component('addBook', {
         <input type="text" v-model="book.isbn" placeholder="ISBN" name="isbn">
         <br>
         <label>OWNER</label>
-        <select name='owner' v-model="owner">
+        <select name='owner' v-model="book.owner">
             <option v-for="row in owners" selected="selected" :value="row['id']"> {{row['name']}}</option>
         </select>
         <br>
