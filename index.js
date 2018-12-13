@@ -41,7 +41,8 @@ app.post('/removeBook', function(request, response) {
 });
 
 app.post('/addBook', function(request, response) {
-	removeBook(request, response);
+	console.log('addBook');
+	addBook(request, response);
 });
 
 app.get('/getUsers', function(request, response) {
