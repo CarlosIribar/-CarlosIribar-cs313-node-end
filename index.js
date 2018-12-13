@@ -20,8 +20,6 @@ app.listen(app.get('port'), function() {
 // Establish a new connection to the data source specified the connection string.
 const pool = new Pool({connectionString: connectionString});
 
-
-
 // This says that we want the function "getPerson" below to handle
 // any requests that come to the /getPerson endpoint
 app.get('/book', function(request, response) {
