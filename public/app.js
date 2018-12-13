@@ -4,10 +4,10 @@ const books = Vue.component('books', {
             books: []
         }
     },
-    template:`
+    template:` 
+        <div>
         <router-link to="/addBook">Add book</router-link>
         <h1> Book List </h1>
-        <div>
         <table>
         <tr>
         <th>Name</th>
@@ -88,7 +88,7 @@ const addBook = Vue.component('addBook', {
                 cover: '',
                 owner: '',
             },
-            owner: ['1', '2']
+            owners: []
         };
     },
     template:`<div>
@@ -105,7 +105,7 @@ const addBook = Vue.component('addBook', {
         <br>
         <label>OWNER</label>
         <select name='owner' v-model="owner">
-            <option v-for="row in owner" selected="selected" value="{{row['id']}}"> {{row['name']}}</option>
+            <option v-for="row in owners" selected="selected" value="{{row['id']}}"> {{row['name']}}</option>
         </select>
         <br>
         <label>Cover link</label>
@@ -123,10 +123,15 @@ const addBook = Vue.component('addBook', {
             // this.$http.get('/addBook',  {params: {id: this.id}}).then((response) => {
             //     this.book = response.body
             // });
+        },
+        getUsers() {
+            this.$http.get('/getUsers').then((response) => {
+                this.owners = response.body
+            });
         }
     },
     beforeMount(){
-        //this.getBook()
+        this.getUsers();
     }
 })
 

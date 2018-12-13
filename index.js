@@ -40,6 +40,10 @@ app.post('/removeBook', function(request, response) {
 	removeBook(request, response);
 });
 
+app.get('/getUsers', function(request, response) {
+	getUsers(request, response);
+});
+
 
 
 // This function handles requests to the /getPerson endpoint
@@ -91,6 +95,24 @@ function removeBook(request, response) {
 			response.status(500).json({success: false, data: error});
 		} else {
 			response.status(200).json({success: true, data: 'Element removed'});
+		}
+	});
+}
+
+// This function handles requests to the /getPerson endpoint
+// it expects to have an id on the query string, such as: http://localhost:5000/getPerson?id=1
+function getUsers(request, response) {
+
+	getUsersFromDb(id, function(error, result) {
+		// This is the callback function that will be called when the DB is done.
+		// The job here is just to send it back.
+
+		// Make sure we got a row with the person, then prepare JSON to send back
+		if (error || result == null) {
+			response.status(500).json({success: false, data: error});
+		} else {
+			var person = result[0];
+			response.status(200).json(result);
 		}
 	});
 }
@@ -200,5 +222,31 @@ function removeBookFromDB(id, callback) {
 		});
 	});
 	
+
+}
+
+function getUsersFromDb(callback) {
+	console.log("Getting users from DB with ");
+  
+  const sql = "SELECT Id, Name FROM Accounts"
+	pool.query(sql, null, function(err, result) {
+		// If an error occurred...
+		if (err) {
+			console.log("Error in query: ")
+			console.log(err);
+			callback(err, null);
+		}
+
+		// Log this to the console for debugging purposes.
+		console.log("Found result: " + JSON.stringify(result.rows));
+
+
+		// When someone else called this function, they supplied the function
+		// they wanted called when we were all done. Call that function now
+		// and pass it the results.
+
+		// (The first parameter is the error variable, so we will pass null.)
+		callback(null, result.rows);
+	});
 
 }
