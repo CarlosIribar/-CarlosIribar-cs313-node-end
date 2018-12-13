@@ -255,8 +255,6 @@ function addBookFromDB(book, callback) {
 	// Set up the SQL that we will use for our query. Note that we can make
 	// use of parameter placeholders just like with PHP's PDO.
 	const sql = 'INSERT INTO books(Name, Author, ISBN, Cover, UserId)  VALUES($1::int, $1::int, $2::int, :$3::int, $4::int)';
-
-	const sql = 'DELETE FROM books WHERE id=$1::int';
 	// We now set up an array of all the parameters we will pass to fill the
 	// placeholder spots we left in the query.
 	var params = [book.id, book.author, book.isbn, book.cover, book.owner];
