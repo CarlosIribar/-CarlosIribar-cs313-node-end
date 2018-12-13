@@ -105,7 +105,7 @@ const addBook = Vue.component('addBook', {
         <br>
         <label>OWNER</label>
         <select name='owner' v-model="book.owner">
-            <option v-for="row in owners" selected="selected" :value="row['id']"> {{row['name']}}</option>
+            <option v-for="row in owners" :value="row['id']"> {{row['name']}}</option>
         </select>
         <br>
         <label>Cover link</label>
@@ -127,6 +127,7 @@ const addBook = Vue.component('addBook', {
         getUsers() {
             this.$http.get('/getUsers').then((response) => {
                 this.owners = response.body
+                this.book.owner = response.body[0].id;
             });
         }
     },
