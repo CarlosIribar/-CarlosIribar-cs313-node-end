@@ -87,7 +87,7 @@ function removeBook(request, response) {
 		// The job here is just to send it back.
 
 		// Make sure we got a row with the person, then prepare JSON to send back
-		if (error || result == null || result.length != 1) {
+		if (error) {
 			response.status(500).json({success: false, data: error});
 		} else {
 			response.status(200).json({success: true, data: 'Element removed'});
@@ -173,6 +173,7 @@ function removeBookFromDB(id, callback) {
 	// This runs the query, and then calls the provided anonymous callback function
 	// with the results.
 	pool.query(sql1, params, function(err, result) {
+		console.log('removingReference')
 		// If an error occurred...
 		if (err) {
 			console.log("Error in query: ")
@@ -182,6 +183,7 @@ function removeBookFromDB(id, callback) {
 
 		pool.query(sql, params, function(err, result) {
 			// If an error occurred...
+			console.log('removingProperBook')
 			if (err) {
 				console.log("Error in query: ")
 				console.log(err);
@@ -194,7 +196,7 @@ function removeBookFromDB(id, callback) {
 			// and pass it the results.
 	
 			// (The first parameter is the error variable, so we will pass null.)
-			callback(null);
+			callback(false, {}});
 		});
 	});
 	

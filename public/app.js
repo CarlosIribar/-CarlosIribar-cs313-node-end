@@ -4,7 +4,10 @@ const books = Vue.component('books', {
             books: []
         }
     },
-    template:`<div>
+    template:`
+        <router-link to="/addBook">Add book</router-link>
+        <h1> Book List </h1>
+        <div>
         <table>
         <tr>
         <th>Name</th>
@@ -75,10 +78,65 @@ const book = Vue.component('book', {
     }
 })
 
+const addBook = Vue.component('addBook', {
+    data: function () {
+        return {
+            book: {
+                name: '',
+                isbn: '',
+                author: '',
+                cover: '',
+                owner: '',
+            },
+            owner: ['1', '2']
+        };
+    },
+    template:`<div>
+        <router-link to="/">Back to Book List</router-link>
+        <h1>Add Book</h1>
+        <label>Name</label>
+        <input type="text" v-model="book.name" placeholder="Name" name="name">
+        <br>
+        <label>Author</label>
+        <input type="text" v-model="book.author" placeholder="Author" name="author">
+        <br>
+        <label>ISBN</label>
+        <input type="text" v-model="book.isbn" placeholder="ISBN" name="isbn">
+        <br>
+        <label>OWNER</label>
+        <select name='owner' v-model="owner">
+            <option v-for="row in owner" selected="selected" value="{{row['id']}}"> {{row['name']}}</option>
+        </select>
+        <br>
+        <label>Cover link</label>
+        <input type="text" v-model="book.cover" placeholder="Cover link" name="cover">
+        <br>
+        <input type="submit" @click="addBook" >
+    </form>
+
+
+
+</div>`,
+    methods: {
+        addBook() {
+            console.log(this.book);
+            // this.$http.get('/addBook',  {params: {id: this.id}}).then((response) => {
+            //     this.book = response.body
+            // });
+        }
+    },
+    beforeMount(){
+        //this.getBook()
+    }
+})
+
 const routes = [
     { path: '/', component: books },
-    { path: '/book/:id', component: book, props: true }
+    { path: '/book/:id', component: book, props: true },
+    { path: '/addBook', component: addBook, props: true }
 ]
+]
+
 
 const router = new VueRouter({
     routes
