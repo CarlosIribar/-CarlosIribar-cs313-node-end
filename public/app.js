@@ -29,7 +29,7 @@ const books = Vue.component('books', {
                 this.books = response.body
             });
         },
-        removeBooks(id){
+        removeBook(id){
             this.$http.get('/removeBooks', {params: {id: id}}).then((response) => {
                 console.log('removeBook');
                 this.books = this.books.filter((item)=> {return item.id !== id });
