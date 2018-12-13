@@ -120,7 +120,7 @@ const addBook = Vue.component('addBook', {
     methods: {
         addBook() {
             console.log(this.book);
-            this.$http.put('/addBook', {book: this.book}).then((response) => {
+            this.$http.post('/addBook', {book: this.book}).then((response) => {
                 console.log(response);
             });
         },
