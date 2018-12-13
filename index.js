@@ -103,7 +103,7 @@ function removeBook(request, response) {
 // it expects to have an id on the query string, such as: http://localhost:5000/getPerson?id=1
 function getUsers(request, response) {
 
-	getUsersFromDb(id, function(error, result) {
+	getUsersFromDb(function(error, result) {
 		// This is the callback function that will be called when the DB is done.
 		// The job here is just to send it back.
 
