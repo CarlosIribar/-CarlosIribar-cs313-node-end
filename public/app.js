@@ -122,8 +122,7 @@ const addBook = Vue.component('addBook', {
             console.log(this.book);
             this.$http.post('/addBook', {book: this.book}).then((response) => {
                 console.log(response);
-                var router = new VueRouter() ;
-                router.go('/');
+                this.$router.push('/')
             });
         },
         getUsers() {
