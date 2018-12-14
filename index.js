@@ -256,7 +256,7 @@ function addBookFromDB(book, callback) {
 	const sql = 'INSERT INTO books(Name, Author, ISBN, Cover, UserId) VALUES($1, $2, $3, $4, $5)';
 	// We now set up an array of all the parameters we will pass to fill the
 	// placeholder spots we left in the query.
-	var params = [book.id, book.author, book.isbn, book.cover, book.owner];
+	var params = [book.name, book.author, book.isbn, book.cover, book.owner];
 
 	// This runs the query, and then calls the provided anonymous callback function
 	// with the results.
