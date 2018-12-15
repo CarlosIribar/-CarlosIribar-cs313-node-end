@@ -4,7 +4,8 @@ const path = require('path');
 const PORT = process.env.PORT || 5000;
 const { Pool } = require("pg"); 
 const connectionString = process.env.DATABASE_URL;
-const {getBooks} = require("./data/books");
+const getBooks = require("./data/books");
+console.log(getBooks)
 
 const app = express();
 

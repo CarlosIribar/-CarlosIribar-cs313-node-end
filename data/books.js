@@ -12,7 +12,7 @@ module.exports = function getBooks(request, response) {
 }
 
 function getBooksFromDb(callback) {
-    console.log("Getting books from DB with id: ");
+    console.log("Getting books");
   
     const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId";
 
