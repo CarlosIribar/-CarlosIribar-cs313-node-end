@@ -53,6 +53,10 @@ app.post('/editBook', function(request, response) {
 	editBook(request, response);
 });
 
+app.post('/addProgress', function(request, response) {
+	addProgress(request, response);
+});
+
 
 
 // This function handles requests to the /getPerson endpoint
@@ -134,6 +138,25 @@ function editBook(request, response) {
 
 	console.log(book);
 	editBookFromDB(book, function(error, result) {
+		// This is the callback function that will be called when the DB is done.
+		// The job here is just to send it back.
+
+		// Make sure we got a row with the person, then prepare JSON to send back
+		if (error) {
+			response.status(500).json({success: false, data: error});
+		} else {
+			response.status(200).json({success: true, data: 'Element added'});
+		}
+	});
+}
+
+function addProgress(request, response) {
+	// First get the person's id
+	console.log(request.body);
+	var progress = request.body.progress
+
+	console.log(progress);
+	addProgressFromDB(progress, function(error, result) {
 		// This is the callback function that will be called when the DB is done.
 		// The job here is just to send it back.
 
@@ -310,6 +333,32 @@ function editBookFromDB(book, callback) {
 	// with the results.
 	pool.query(sql, params, function(err, result) {
 		console.log('editing book')
+		// If an error occurred...
+		if (err) {
+			console.log("Error in query: ")
+			console.log(err);
+			callback(err, null);
+		}
+
+		callback(false, {});
+	});
+	
+
+}
+
+function addProgressFromDB(progress, callback) {
+	console.log("add Progress from DB");
+
+	// Set up the SQL that we will use for our query. Note that we can make
+	const sql = 'INSERT INTO LectureProgress(StartDate, EndDate, UserId, BookId) VALUES ($1, $2, $3, $4)';
+	// We now set up an array of all the parameters we will pass to fill the
+	// placeholder spots we left in the query.
+	var params = [progress.start, progress.end, progress.user, progress.bookId];
+
+	// This runs the query, and then calls the provided anonymous callback function
+	// with the results.
+	pool.query(sql, params, function(err, result) {
+		console.log('adding progress')
 		// If an error occurred...
 		if (err) {
 			console.log("Error in query: ")

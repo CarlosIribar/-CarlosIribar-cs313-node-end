@@ -65,6 +65,7 @@ const book = Vue.component('book', {
         <b>Owner:</b> 
         {{book['user']}}<br>
         <img height='300px' width='200px' :src="book['cover']"/><br>
+        <router-link :to="'/addProgress/' + row['id']">Add Progress</router-link>
         </div>`,
     methods: {
         getBook() {
@@ -188,7 +189,7 @@ const editBook = Vue.component('editBook', {
         getBook() {
             this.$http.get('/book',  {params: {id: this.id}}).then((response) => {
                 this.book = response.body
-                this.book.owner = response.body[0].id;
+                this.book.owner = response.body.owner;
             });
         }
     },
@@ -198,11 +199,61 @@ const editBook = Vue.component('editBook', {
     }
 })
 
+const addProgress = Vue.component('addProgress', {
+    props: ['id'],
+    data: function () {
+        return {
+            owners: [],
+            progress: {}
+        };
+    },
+    template:`<div>
+        <router-link to="/">Back to Book List</router-link>
+        <h1>Add Progress</h1>
+        <label>Start Date</label>
+        <input type="date" placeholder="Start Date" name="start" v-model="progress.start">
+        <br>
+        <label>End Date</label>
+			<input type="date" placeholder="End Date" name="end" v-model="progress.end">
+        <br>
+        <label>user</label>
+        <select name='user' v-model="progress.user">
+            <option v-for="row in owners" :value="row['id']"> {{row['name']}}</option>
+        </select>
+        <br>
+        <input type="submit" @click="addProgress" >
+    </form>
+
+
+
+</div>`,
+    methods: {
+        addProgress() {
+            console.log(this.progress);
+            this.progress.bookId = this.id; 
+            this.$http.post('/addProgress', {book: this.book}).then((response) => {
+                console.log(response);
+                this.$router.back();
+            });
+        },
+        getUsers() {
+            this.$http.get('/getUsers').then((response) => {
+                this.owners = response.body
+                this.book.owner = response.body[0].id;
+            });
+        }
+    },
+    beforeMount(){
+        this.getUsers();
+    }
+})
+
 const routes = [
     { path: '/', component: books },
     { path: '/book/:id', component: book, props: true },
     { path: '/addBook', component: addBook, props: true },
     { path: '/editBook/:id', component: editBook, props: true },
+    { path: '/addProgress/:id', component: addProgress, props: true }
 ]
 
 
