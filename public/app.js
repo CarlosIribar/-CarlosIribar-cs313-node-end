@@ -65,7 +65,7 @@ const book = Vue.component('book', {
         <b>Owner:</b> 
         {{book['user']}}<br>
         <img height='300px' width='200px' :src="book['cover']"/><br>
-        <bookProgress :id="book['id']"></bookProgress>
+        <bookProgress bookId="book['id']"></bookProgress>
         <router-link :to="'/addProgress/' + book['id']">Add Progress</router-link>
         </div>`,
     methods: {
@@ -250,7 +250,7 @@ const addProgress = Vue.component('addProgress', {
 })
 
 const bookProgress = Vue.component('bookProgress', {
-    props: ['id'],
+    props: ['bookId'],
     data: function () {
         return {
             progress: []
@@ -274,7 +274,7 @@ const bookProgress = Vue.component('bookProgress', {
     methods: {
         getProgress() {
             console.log(this.progress);
-            this.$http.get('/progress', {params: {id: this.id}}).then((response) => {
+            this.$http.get('/progress', {params: {id: this.bookId}}).then((response) => {
                 console.log(response.body);
             });
         },
