@@ -277,6 +277,7 @@ const bookProgress = Vue.component('bookProgress', {
             console.log(this.progress);
             this.$http.get('/progress', {params: {id: this.bookId}}).then((response) => {
                 console.log(response.body);
+                this.progress = this.response.body
             });
         },
     },
