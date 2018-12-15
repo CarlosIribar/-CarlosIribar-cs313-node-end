@@ -61,27 +61,32 @@ app.post('/addProgress', function(request, response) {
 });
 
 
-
-// This function handles requests to the /getPerson endpoint
-// it expects to have an id on the query string, such as: http://localhost:5000/getPerson?id=1
-
+// Handlers 
 
 function getProgress(request, response) {
-	// First get the person's id
 	var id = request.query.id;
 
-	// TODO: We should really check here for a valid id before continuing on...
-
-	// use a helper function to query the DB, and provide a callback for when it's done
+	
 	getProgressFromDb(id, function(error, result) {
-		// This is the callback function that will be called when the DB is done.
-		// The job here is just to send it back.
-
-		// Make sure we got a row with the person, then prepare JSON to send back
+		
 		if (error || result == null) {
 			response.status(500).json({success: false, data: error});
 		} else {
 			response.status(200).json(result);
+		}
+	});
+}
+
+function getBook(request, response) {
+    var id = request.query.id;
+    
+	getBookFromDb(id, function(error, result) {
+		
+		if (error || result == null || result.length != 1) {
+			response.status(500).json({success: false, data: error});
+		} else {
+			var person = result[0];
+			response.status(200).json(result[0]);
 		}
 	});
 }
@@ -98,16 +103,12 @@ function getBooks(request, response) {
 }
 
 function removeBook(request, response) {
-	// First get the person's id
 	console.log(request.body);
 	var id = request.body.id
 
 	console.log(id);
 	removeBookFromDB(id, function(error, result) {
-		// This is the callback function that will be called when the DB is done.
-		// The job here is just to send it back.
-
-		// Make sure we got a row with the person, then prepare JSON to send back
+		
 		if (error) {
 			response.status(500).json({success: false, data: error});
 		} else {
@@ -117,16 +118,11 @@ function removeBook(request, response) {
 }
 
 function addBook(request, response) {
-	// First get the person's id
 	console.log(request.body);
 	var book = request.body.book
 
-	console.log(book);
 	addBookFromDB(book, function(error, result) {
-		// This is the callback function that will be called when the DB is done.
-		// The job here is just to send it back.
-
-		// Make sure we got a row with the person, then prepare JSON to send back
+		
 		if (error) {
 			response.status(500).json({success: false, data: error});
 		} else {
@@ -136,16 +132,12 @@ function addBook(request, response) {
 }
 
 function editBook(request, response) {
-	// First get the person's id
 	console.log(request.body);
 	var book = request.body.book
 
 	console.log(book);
 	editBookFromDB(book, function(error, result) {
-		// This is the callback function that will be called when the DB is done.
-		// The job here is just to send it back.
-
-		// Make sure we got a row with the person, then prepare JSON to send back
+		
 		if (error) {
 			response.status(500).json({success: false, data: error});
 		} else {
@@ -155,16 +147,12 @@ function editBook(request, response) {
 }
 
 function addProgress(request, response) {
-	// First get the person's id
 	console.log(request.body);
 	var progress = request.body.progress
 
 	console.log(progress);
 	addProgressFromDB(progress, function(error, result) {
-		// This is the callback function that will be called when the DB is done.
-		// The job here is just to send it back.
-
-		// Make sure we got a row with the person, then prepare JSON to send back
+		
 		if (error) {
 			response.status(500).json({success: false, data: error});
 		} else {
@@ -172,15 +160,11 @@ function addProgress(request, response) {
 		}
 	});
 }
-// This function handles requests to the /getPerson endpoint
-// it expects to have an id on the query string, such as: http://localhost:5000/getPerson?id=1
+
 function getUsers(request, response) {
 
 	getUsersFromDb(function(error, result) {
-		// This is the callback function that will be called when the DB is done.
-		// The job here is just to send it back.
-
-		// Make sure we got a row with the person, then prepare JSON to send back
+		
 		if (error || result == null) {
 			response.status(500).json({success: false, data: error});
 		} else {
@@ -189,21 +173,13 @@ function getUsers(request, response) {
 		}
 	});
 }
+function getBookFromDb(id, callback) {
+	
+	const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId WHERE a.id = $1::int";
+	
+	const params = [id];
 
- // end of getPersonFromDb
-
-function getProgressFromDb(id, callback) {
-	console.log("Getting progress from DB with id: " + id);
-
-	// Set up the SQL that we will use for our query. Note that we can make
-	// use of parameter placeholders just like with PHP's PDO.
-	const sql = "SELECT b.StartDate, b.EndDate, b.Id, a.Name as user FROM LectureProgress b LEFT JOIN Accounts a ON UserId = a.Id WHERE b.BookId = $1::int";
-	// We now set up an array of all the parameters we will pass to fill the
-	// placeholder spots we left in the query.
-	var params = [id];
-
-	// This runs the query, and then calls the provided anonymous callback function
-	// with the results.
+	
 	pool.query(sql, params, function(err, result) {
 		// If an error occurred...
 		if (err) {
@@ -215,21 +191,36 @@ function getProgressFromDb(id, callback) {
 		// Log this to the console for debugging purposes.
 		console.log("Found result: " + JSON.stringify(result.rows));
 
+		callback(null, result.rows);
+	});
 
-		// When someone else called this function, they supplied the function
-		// they wanted called when we were all done. Call that function now
-		// and pass it the results.
+}
 
-		// (The first parameter is the error variable, so we will pass null.)
+function getProgressFromDb(id, callback) {
+	console.log("Getting progress from DB with id: " + id);
+
+	const sql = "SELECT b.StartDate, b.EndDate, b.Id, a.Name as user FROM LectureProgress b LEFT JOIN Accounts a ON UserId = a.Id WHERE b.BookId = $1::int";	
+	const params = [id];
+
+	pool.query(sql, params, function(err, result) {
+		// If an error occurred...
+		if (err) {
+			console.log("Error in query: ")
+			console.log(err);
+			callback(err, null);
+		}
+
+		// Log this to the console for debugging purposes.
+		console.log("Found result: " + JSON.stringify(result.rows));
 		callback(null, result.rows);
 	});
 
 }
 
 function getBooksFromDb(callback) {
-	console.log("Getting books from DB with id: ");
+    console.log("Getting books from DB with id: ");
   
-  const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId";
+    const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId";
 
 	pool.query(sql, null, function(err, result) {
 		// If an error occurred...
@@ -241,13 +232,6 @@ function getBooksFromDb(callback) {
 
 		// Log this to the console for debugging purposes.
 		console.log("Found result: " + JSON.stringify(result.rows));
-
-
-		// When someone else called this function, they supplied the function
-		// they wanted called when we were all done. Call that function now
-		// and pass it the results.
-
-		// (The first parameter is the error variable, so we will pass null.)
 		callback(null, result.rows);
 	});
 
@@ -256,16 +240,10 @@ function getBooksFromDb(callback) {
 function removeBookFromDB(id, callback) {
 	console.log("Removing person from DB with id: " + id);
 
-	// Set up the SQL that we will use for our query. Note that we can make
-	// use of parameter placeholders just like with PHP's PDO.
 	const sql1 = 'DELETE FROM lectureprogress WHERE BookId=$1::int';
 	const sql = 'DELETE FROM books WHERE id=$1::int';
-	// We now set up an array of all the parameters we will pass to fill the
-	// placeholder spots we left in the query.
 	var params = [id];
 
-	// This runs the query, and then calls the provided anonymous callback function
-	// with the results.
 	pool.query(sql1, params, function(err, result) {
 		console.log('removingReference')
 		// If an error occurred...
@@ -283,13 +261,7 @@ function removeBookFromDB(id, callback) {
 				console.log(err);
 				callback(err, null);
 			}
-	
-	
-			// When someone else called this function, they supplied the function
-			// they wanted called when we were all done. Call that function now
-			// and pass it the results.
-	
-			// (The first parameter is the error variable, so we will pass null.)
+
 			callback(false, {});
 		});
 	});
@@ -300,14 +272,10 @@ function removeBookFromDB(id, callback) {
 function addBookFromDB(book, callback) {
 	console.log("add book person from DB with id: " + book.name);
 
-	// Set up the SQL that we will use for our query. Note that we can make
 	const sql = 'INSERT INTO books(Name, Author, ISBN, Cover, UserId) VALUES($1, $2, $3, $4, $5)';
-	// We now set up an array of all the parameters we will pass to fill the
-	// placeholder spots we left in the query.
+	
 	var params = [book.name, book.author, book.isbn, book.cover, book.owner];
 
-	// This runs the query, and then calls the provided anonymous callback function
-	// with the results.
 	pool.query(sql, params, function(err, result) {
 		console.log('adding book')
 		// If an error occurred...
@@ -326,10 +294,8 @@ function addBookFromDB(book, callback) {
 function editBookFromDB(book, callback) {
 	console.log("edit book person from DB with id: " + book.name);
 
-	// Set up the SQL that we will use for our query. Note that we can make
 	const sql = 'UPDATE books set Name=$1, Author=$2, isbn=$3, Cover=$4, userId=$5 WHERE id = $6 ';
-	// We now set up an array of all the parameters we will pass to fill the
-	// placeholder spots we left in the query.
+
 	var params = [book.name, book.author, book.isbn, book.cover, book.owner, book.id];
 
 	// This runs the query, and then calls the provided anonymous callback function
@@ -352,14 +318,11 @@ function editBookFromDB(book, callback) {
 function addProgressFromDB(progress, callback) {
 	console.log("add Progress from DB");
 
-	// Set up the SQL that we will use for our query. Note that we can make
 	const sql = 'INSERT INTO LectureProgress(StartDate, EndDate, UserId, BookId) VALUES ($1, $2, $3, $4)';
-	// We now set up an array of all the parameters we will pass to fill the
-	// placeholder spots we left in the query.
+	
 	var params = [progress.start, progress.end, progress.user, progress.bookId];
 
-	// This runs the query, and then calls the provided anonymous callback function
-	// with the results.
+	
 	pool.query(sql, params, function(err, result) {
 		console.log('adding progress')
 		// If an error occurred...
@@ -378,7 +341,7 @@ function addProgressFromDB(progress, callback) {
 function getUsersFromDb(callback) {
 	console.log("Getting users from DB with ");
   
-  const sql = "SELECT Id, Name FROM Accounts"
+    const sql = "SELECT Id, Name FROM Accounts"
 	pool.query(sql, null, function(err, result) {
 		// If an error occurred...
 		if (err) {
@@ -389,13 +352,6 @@ function getUsersFromDb(callback) {
 
 		// Log this to the console for debugging purposes.
 		console.log("Found result: " + JSON.stringify(result.rows));
-
-
-		// When someone else called this function, they supplied the function
-		// they wanted called when we were all done. Call that function now
-		// and pass it the results.
-
-		// (The first parameter is the error variable, so we will pass null.)
 		callback(null, result.rows);
 	});
 
