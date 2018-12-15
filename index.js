@@ -1,7 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const path = require('path')
-const getBook = require('./data/book');
+const path = require('path');
 const PORT = process.env.PORT || 5000;
 const { Pool } = require("pg"); 
 const connectionString = process.env.DATABASE_URL;
