@@ -174,7 +174,7 @@ const editBook = Vue.component('editBook', {
     methods: {
         editBook() {
             console.log(this.book);
-            this.$http.post('/editBook', {book: this.book}).then((response) => {
+            this.$http.put('/editBook', {book: this.book}).then((response) => {
                 console.log(response);
                 this.$router.push('/')
             });
