@@ -65,7 +65,7 @@ const book = Vue.component('book', {
         <b>Owner:</b> 
         {{book['user']}}<br>
         <img height='300px' width='200px' :src="book['cover']"/><br>
-        <router-link :to="'/addProgress/' + row['id']">Add Progress</router-link>
+        <router-link :to="'/addProgress/' + book['id']">Add Progress</router-link>
         </div>`,
     methods: {
         getBook() {
