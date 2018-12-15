@@ -231,7 +231,7 @@ const addProgress = Vue.component('addProgress', {
         addProgress() {
             console.log(this.progress);
             this.progress.bookId = this.id; 
-            this.$http.post('/addProgress', {book: this.book}).then((response) => {
+            this.$http.post('/addProgress', {progress: this.progress}).then((response) => {
                 console.log(response);
                 this.$router.back();
             });
