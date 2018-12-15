@@ -264,9 +264,9 @@ const bookProgress = Vue.component('bookProgress', {
             <th>User</th>
             </tr>
             <tr v-for="row in progress">
-                <td>row['startdate']</td>
-                <td>row['enddate']</td>
-                <td>row['user']</td>
+                <td>{{row['startdate']}}</td>
+                <td>{{row['enddate']}}</td>
+                <td>{{row['user']}}</td>
             </tr>
             
             </table>
