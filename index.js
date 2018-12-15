@@ -49,8 +49,8 @@ app.get('/getUsers', function(request, response) {
 	getUsers(request, response);
 });
 
-app.put('/editUser', function(request, response) {
-	editUser(request, response);
+app.post('/editBook', function(request, response) {
+	editBook(request, response);
 });
 
 

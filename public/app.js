@@ -174,7 +174,7 @@ const editBook = Vue.component('editBook', {
     methods: {
         editBook() {
             console.log(this.book);
-            this.$http.put('/editBook', {book: this.book}).then((response) => {
+            this.$http.post('/editBook', {book: this.book}).then((response) => {
                 console.log(response);
                 this.$router.push('/')
             });
@@ -188,6 +188,7 @@ const editBook = Vue.component('editBook', {
         getBook() {
             this.$http.get('/book',  {params: {id: this.id}}).then((response) => {
                 this.book = response.body
+                this.book.owner = response.body[0].id;
             });
         }
     },
