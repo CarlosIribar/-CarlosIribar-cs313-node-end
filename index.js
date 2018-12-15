@@ -3,6 +3,13 @@ const bodyParser = require('body-parser')
 const path = require('path');
 const { Pool } = require("pg"); 
 const getBooks = require("./data/books");
+const getBook = require("./data/book");
+const getUsers = require("./data/user");
+const getProgress = require("./data/progress");
+const editBook = require("./data/editBook");
+const addBook = require("./data/addBook");
+const removeBook = require("./data/removeBook");
+const addProgress = require("./data/addProgress");
 
 
 const PORT = process.env.PORT || 5000;
@@ -65,33 +72,33 @@ app.post('/addProgress', function(request, response) {
 
 // Handlers 
 
-function getProgress(request, response) {
-	var id = request.query.id;
+// function getProgress(request, response) {
+// 	var id = request.query.id;
 
 	
-	getProgressFromDb(id, function(error, result) {
+// 	getProgressFromDb(id, function(error, result) {
 		
-		if (error || result == null) {
-			response.status(500).json({success: false, data: error});
-		} else {
-			response.status(200).json(result);
-		}
-	});
-}
+// 		if (error || result == null) {
+// 			response.status(500).json({success: false, data: error});
+// 		} else {
+// 			response.status(200).json(result);
+// 		}
+// 	});
+// }
 
-function getBook(request, response) {
-    var id = request.query.id;
+// function getBook(request, response) {
+//     var id = request.query.id;
     
-	getBookFromDb(id, function(error, result) {
+// 	getBookFromDb(id, function(error, result) {
 		
-		if (error || result == null || result.length != 1) {
-			response.status(500).json({success: false, data: error});
-		} else {
-			var person = result[0];
-			response.status(200).json(result[0]);
-		}
-	});
-}
+// 		if (error || result == null || result.length != 1) {
+// 			response.status(500).json({success: false, data: error});
+// 		} else {
+// 			var person = result[0];
+// 			response.status(200).json(result[0]);
+// 		}
+// 	});
+// }
 
 /*function getBooks(request, response) {
 
@@ -104,120 +111,120 @@ function getBook(request, response) {
 	});
 }*/
 
-function removeBook(request, response) {
-	console.log(request.body);
-	var id = request.body.id
+// function removeBook(request, response) {
+// 	console.log(request.body);
+// 	var id = request.body.id
 
-	console.log(id);
-	removeBookFromDB(id, function(error, result) {
+// 	console.log(id);
+// 	removeBookFromDB(id, function(error, result) {
 		
-		if (error) {
-			response.status(500).json({success: false, data: error});
-		} else {
-			response.status(200).json({success: true, data: 'Element removed'});
-		}
-	});
-}
+// 		if (error) {
+// 			response.status(500).json({success: false, data: error});
+// 		} else {
+// 			response.status(200).json({success: true, data: 'Element removed'});
+// 		}
+// 	});
+// }
 
-function addBook(request, response) {
-	console.log(request.body);
-	var book = request.body.book
+// function addBook(request, response) {
+// 	console.log(request.body);
+// 	var book = request.body.book
 
-	addBookFromDB(book, function(error, result) {
+// 	addBookFromDB(book, function(error, result) {
 		
-		if (error) {
-			response.status(500).json({success: false, data: error});
-		} else {
-			response.status(200).json({success: true, data: 'Element added'});
-		}
-	});
-}
+// 		if (error) {
+// 			response.status(500).json({success: false, data: error});
+// 		} else {
+// 			response.status(200).json({success: true, data: 'Element added'});
+// 		}
+// 	});
+// }
 
-function editBook(request, response) {
-	console.log(request.body);
-	var book = request.body.book
+// function editBook(request, response) {
+// 	console.log(request.body);
+// 	var book = request.body.book
 
-	console.log(book);
-	editBookFromDB(book, function(error, result) {
+// 	console.log(book);
+// 	editBookFromDB(book, function(error, result) {
 		
-		if (error) {
-			response.status(500).json({success: false, data: error});
-		} else {
-			response.status(200).json({success: true, data: 'Element added'});
-		}
-	});
-}
+// 		if (error) {
+// 			response.status(500).json({success: false, data: error});
+// 		} else {
+// 			response.status(200).json({success: true, data: 'Element added'});
+// 		}
+// 	});
+// }
 
-function addProgress(request, response) {
-	console.log(request.body);
-	var progress = request.body.progress
+// function addProgress(request, response) {
+// 	console.log(request.body);
+// 	var progress = request.body.progress
 
-	console.log(progress);
-	addProgressFromDB(progress, function(error, result) {
+// 	console.log(progress);
+// 	addProgressFromDB(progress, function(error, result) {
 		
-		if (error) {
-			response.status(500).json({success: false, data: error});
-		} else {
-			response.status(200).json({success: true, data: 'Element added'});
-		}
-	});
-}
+// 		if (error) {
+// 			response.status(500).json({success: false, data: error});
+// 		} else {
+// 			response.status(200).json({success: true, data: 'Element added'});
+// 		}
+// 	});
+// }
 
-function getUsers(request, response) {
+// function getUsers(request, response) {
 
-	getUsersFromDb(function(error, result) {
+// 	getUsersFromDb(function(error, result) {
 		
-		if (error || result == null) {
-			response.status(500).json({success: false, data: error});
-		} else {
-			var person = result[0];
-			response.status(200).json(result);
-		}
-	});
-}
-function getBookFromDb(id, callback) {
+// 		if (error || result == null) {
+// 			response.status(500).json({success: false, data: error});
+// 		} else {
+// 			var person = result[0];
+// 			response.status(200).json(result);
+// 		}
+// 	});
+// }
+// function getBookFromDb(id, callback) {
 	
-	const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId WHERE a.id = $1::int";
+// 	const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId WHERE a.id = $1::int";
 	
-	const params = [id];
+// 	const params = [id];
 
 	
-	pool.query(sql, params, function(err, result) {
-		// If an error occurred...
-		if (err) {
-			console.log("Error in query: ")
-			console.log(err);
-			callback(err, null);
-		}
+// 	pool.query(sql, params, function(err, result) {
+// 		// If an error occurred...
+// 		if (err) {
+// 			console.log("Error in query: ")
+// 			console.log(err);
+// 			callback(err, null);
+// 		}
 
-		// Log this to the console for debugging purposes.
-		console.log("Found result: " + JSON.stringify(result.rows));
+// 		// Log this to the console for debugging purposes.
+// 		console.log("Found result: " + JSON.stringify(result.rows));
 
-		callback(null, result.rows);
-	});
+// 		callback(null, result.rows);
+// 	});
 
-}
+// }
 
-function getProgressFromDb(id, callback) {
-	console.log("Getting progress from DB with id: " + id);
+// function getProgressFromDb(id, callback) {
+// 	console.log("Getting progress from DB with id: " + id);
 
-	const sql = "SELECT b.StartDate, b.EndDate, b.Id, a.Name as user FROM LectureProgress b LEFT JOIN Accounts a ON UserId = a.Id WHERE b.BookId = $1::int";	
-	const params = [id];
+// 	const sql = "SELECT b.StartDate, b.EndDate, b.Id, a.Name as user FROM LectureProgress b LEFT JOIN Accounts a ON UserId = a.Id WHERE b.BookId = $1::int";	
+// 	const params = [id];
 
-	pool.query(sql, params, function(err, result) {
-		// If an error occurred...
-		if (err) {
-			console.log("Error in query: ")
-			console.log(err);
-			callback(err, null);
-		}
+// 	pool.query(sql, params, function(err, result) {
+// 		// If an error occurred...
+// 		if (err) {
+// 			console.log("Error in query: ")
+// 			console.log(err);
+// 			callback(err, null);
+// 		}
 
-		// Log this to the console for debugging purposes.
-		console.log("Found result: " + JSON.stringify(result.rows));
-		callback(null, result.rows);
-	});
+// 		// Log this to the console for debugging purposes.
+// 		console.log("Found result: " + JSON.stringify(result.rows));
+// 		callback(null, result.rows);
+// 	});
 
-}
+// }
 
 // function getBooksFromDb(callback) {
 //     console.log("Getting books from DB with id: ");
@@ -239,129 +246,129 @@ function getProgressFromDb(id, callback) {
 
 // }
 
-function removeBookFromDB(id, callback) {
-	console.log("Removing person from DB with id: " + id);
+// function removeBookFromDB(id, callback) {
+// 	console.log("Removing person from DB with id: " + id);
 
-	const sql1 = 'DELETE FROM lectureprogress WHERE BookId=$1::int';
-	const sql = 'DELETE FROM books WHERE id=$1::int';
-	var params = [id];
+// 	const sql1 = 'DELETE FROM lectureprogress WHERE BookId=$1::int';
+// 	const sql = 'DELETE FROM books WHERE id=$1::int';
+// 	var params = [id];
 
-	pool.query(sql1, params, function(err, result) {
-		console.log('removingReference')
-		// If an error occurred...
-		if (err) {
-			console.log("Error in query: ")
-			console.log(err);
-			callback(err, null);
-		}
+// 	pool.query(sql1, params, function(err, result) {
+// 		console.log('removingReference')
+// 		// If an error occurred...
+// 		if (err) {
+// 			console.log("Error in query: ")
+// 			console.log(err);
+// 			callback(err, null);
+// 		}
 
-		pool.query(sql, params, function(err, result) {
-			// If an error occurred...
-			console.log('removingProperBook')
-			if (err) {
-				console.log("Error in query: ")
-				console.log(err);
-				callback(err, null);
-			}
+// 		pool.query(sql, params, function(err, result) {
+// 			// If an error occurred...
+// 			console.log('removingProperBook')
+// 			if (err) {
+// 				console.log("Error in query: ")
+// 				console.log(err);
+// 				callback(err, null);
+// 			}
 
-			callback(false, {});
-		});
-	});
+// 			callback(false, {});
+// 		});
+// 	});
 	
 
-}
+// }
 
-function addBookFromDB(book, callback) {
-	console.log("add book person from DB with id: " + book.name);
+// function addBookFromDB(book, callback) {
+// 	console.log("add book person from DB with id: " + book.name);
 
-	const sql = 'INSERT INTO books(Name, Author, ISBN, Cover, UserId) VALUES($1, $2, $3, $4, $5)';
+// 	const sql = 'INSERT INTO books(Name, Author, ISBN, Cover, UserId) VALUES($1, $2, $3, $4, $5)';
 	
-	var params = [book.name, book.author, book.isbn, book.cover, book.owner];
+// 	var params = [book.name, book.author, book.isbn, book.cover, book.owner];
 
-	pool.query(sql, params, function(err, result) {
-		console.log('adding book')
-		// If an error occurred...
-		if (err) {
-			console.log("Error in query: ")
-			console.log(err);
-			callback(err, null);
-		}
+// 	pool.query(sql, params, function(err, result) {
+// 		console.log('adding book')
+// 		// If an error occurred...
+// 		if (err) {
+// 			console.log("Error in query: ")
+// 			console.log(err);
+// 			callback(err, null);
+// 		}
 
-		callback(false, {});
-	});
-	
-
-}
-
-function editBookFromDB(book, callback) {
-	console.log("edit book person from DB with id: " + book.name);
-
-	const sql = 'UPDATE books set Name=$1, Author=$2, isbn=$3, Cover=$4, userId=$5 WHERE id = $6 ';
-
-	var params = [book.name, book.author, book.isbn, book.cover, book.owner, book.id];
-
-	// This runs the query, and then calls the provided anonymous callback function
-	// with the results.
-	pool.query(sql, params, function(err, result) {
-		console.log('editing book')
-		// If an error occurred...
-		if (err) {
-			console.log("Error in query: ")
-			console.log(err);
-			callback(err, null);
-		}
-
-		callback(false, {});
-	});
+// 		callback(false, {});
+// 	});
 	
 
-}
+// }
 
-function addProgressFromDB(progress, callback) {
-	console.log("add Progress from DB");
+// function editBookFromDB(book, callback) {
+// 	console.log("edit book person from DB with id: " + book.name);
 
-	const sql = 'INSERT INTO LectureProgress(StartDate, EndDate, UserId, BookId) VALUES ($1, $2, $3, $4)';
-	if (progress.start == '') {
-		progress.start == null;
-	}
+// 	const sql = 'UPDATE books set Name=$1, Author=$2, isbn=$3, Cover=$4, userId=$5 WHERE id = $6 ';
 
-	if (progress.end == '') {
-		progress.end == null;
-	}
+// 	var params = [book.name, book.author, book.isbn, book.cover, book.owner, book.id];
 
-	var params = [progress.start, progress.end, progress.user, progress.bookId];
+// 	// This runs the query, and then calls the provided anonymous callback function
+// 	// with the results.
+// 	pool.query(sql, params, function(err, result) {
+// 		console.log('editing book')
+// 		// If an error occurred...
+// 		if (err) {
+// 			console.log("Error in query: ")
+// 			console.log(err);
+// 			callback(err, null);
+// 		}
 
-	
-	pool.query(sql, params, function(err, result) {
-		console.log('adding progress')
-		// If an error occurred...
-		if (err) {
-			console.log("Error in query: ")
-			console.log(err);
-			callback(err, null);
-		}
-
-		callback(false, {});
-	});
+// 		callback(false, {});
+// 	});
 	
 
-}
+// }
 
-function getUsersFromDb(callback) {
-	console.log("Getting users from DB with ");
+// function addProgressFromDB(progress, callback) {
+// 	console.log("add Progress from DB");
+
+// 	const sql = 'INSERT INTO LectureProgress(StartDate, EndDate, UserId, BookId) VALUES ($1, $2, $3, $4)';
+// 	if (progress.start == '') {
+// 		progress.start == null;
+// 	}
+
+// 	if (progress.end == '') {
+// 		progress.end == null;
+// 	}
+
+// 	var params = [progress.start, progress.end, progress.user, progress.bookId];
+
+	
+// 	pool.query(sql, params, function(err, result) {
+// 		console.log('adding progress')
+// 		// If an error occurred...
+// 		if (err) {
+// 			console.log("Error in query: ")
+// 			console.log(err);
+// 			callback(err, null);
+// 		}
+
+// 		callback(false, {});
+// 	});
+	
+
+// }
+
+// function getUsersFromDb(callback) {
+// 	console.log("Getting users from DB with ");
   
-    const sql = "SELECT Id, Name FROM Accounts"
-	pool.query(sql, null, function(err, result) {
-		// If an error occurred...
-		if (err) {
-			console.log("Error in query: ")
-			console.log(err);
-			callback(err, null);
-		}
+//     const sql = "SELECT Id, Name FROM Accounts"
+// 	pool.query(sql, null, function(err, result) {
+// 		// If an error occurred...
+// 		if (err) {
+// 			console.log("Error in query: ")
+// 			console.log(err);
+// 			callback(err, null);
+// 		}
 
-		// Log this to the console for debugging purposes.
-		console.log("Found result: " + JSON.stringify(result.rows));
-		callback(null, result.rows);
-	});
+// 		// Log this to the console for debugging purposes.
+// 		console.log("Found result: " + JSON.stringify(result.rows));
+// 		callback(null, result.rows);
+// 	});
 
-}
+// }
