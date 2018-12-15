@@ -1,5 +1,9 @@
 const { Pool } = require("pg");
 
+const connectionString = process.env.DATABASE_URL;
+const pool = new Pool({connectionString: connectionString});
+
+
 module.exports = function getBooks(request, response) {
 	getBooksFromDb(function (error, result) {
 		if (error || result == null) {

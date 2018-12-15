@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const path = require('path');
 const PORT = process.env.PORT || 5000;
 const { Pool } = require("pg"); 
-const connectionString = process.env.DATABASE_URL;
 const getBooks = require("./data/books");
 console.log(getBooks)
 
