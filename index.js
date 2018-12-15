@@ -45,7 +45,6 @@ app.post('/removeBook', function(request, response) {
 });
 
 app.post('/addBook', function(request, response) {
-	console.log('addBook');
 	addBook(request, response);
 });
 
