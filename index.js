@@ -4,6 +4,7 @@ const path = require('path');
 const PORT = process.env.PORT || 5000;
 const { Pool } = require("pg"); 
 const connectionString = process.env.DATABASE_URL;
+const {getBooks} = require("./data/books");
 
 const app = express();
 
@@ -90,7 +91,7 @@ function getBook(request, response) {
 	});
 }
 
-function getBooks(request, response) {
+/*function getBooks(request, response) {
 
 	getBooksFromDb(function(error, result) {
 		if (error || result == null ) {
@@ -99,7 +100,7 @@ function getBooks(request, response) {
 			response.status(200).json(result);
 		}
 	});
-}
+}*/
 
 function removeBook(request, response) {
 	console.log(request.body);
@@ -216,25 +217,25 @@ function getProgressFromDb(id, callback) {
 
 }
 
-function getBooksFromDb(callback) {
-    console.log("Getting books from DB with id: ");
+// function getBooksFromDb(callback) {
+//     console.log("Getting books from DB with id: ");
   
-    const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId";
+//     const sql = "SELECT a.id, a.Name, a.Author, a.ISBN, a.UserId, b.Name as user FROM books a INNER JOIN accounts b ON b.id = UserId";
 
-	pool.query(sql, null, function(err, result) {
-		// If an error occurred...
-		if (err) {
-			console.log("Error in query: ")
-			console.log(err);
-			callback(err, null);
-		}
+// 	pool.query(sql, null, function(err, result) {
+// 		// If an error occurred...
+// 		if (err) {
+// 			console.log("Error in query: ")
+// 			console.log(err);
+// 			callback(err, null);
+// 		}
 
-		// Log this to the console for debugging purposes.
-		console.log("Found result: " + JSON.stringify(result.rows));
-		callback(null, result.rows);
-	});
+// 		// Log this to the console for debugging purposes.
+// 		console.log("Found result: " + JSON.stringify(result.rows));
+// 		callback(null, result.rows);
+// 	});
 
-}
+// }
 
 function removeBookFromDB(id, callback) {
 	console.log("Removing person from DB with id: " + id);
@@ -318,7 +319,14 @@ function addProgressFromDB(progress, callback) {
 	console.log("add Progress from DB");
 
 	const sql = 'INSERT INTO LectureProgress(StartDate, EndDate, UserId, BookId) VALUES ($1, $2, $3, $4)';
-	
+	if (progress.start == '') {
+		progress.start == null;
+	}
+
+	if (progress.end == '') {
+		progress.end == null;
+	}
+
 	var params = [progress.start, progress.end, progress.user, progress.bookId];
 
 	
