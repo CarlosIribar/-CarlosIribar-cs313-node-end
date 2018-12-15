@@ -22,7 +22,7 @@ const books = Vue.component('books', {
             <td>{{row['isbn']}}</td>
             <td>{{row['user']}}</td>
             <td><button @click="removeBook(row['id'])"> Remove </button></td>
-            <td><button onClick=''> Edit </button></td>
+            <td><button :to="'/editBook/' + row['id']"> Edit </button></td>
         </tr>
         </table>
         </div>`,
@@ -137,10 +137,71 @@ const addBook = Vue.component('addBook', {
     }
 })
 
+const editBook = Vue.component('editBook', {
+    props: ['id'],
+    data: function () {
+        return {
+            book: {},
+            owners: []
+        };
+    },
+    template:`<div>
+        <router-link to="/">Back to Book List</router-link>
+        <h1>Add Book</h1>
+        <label>Name</label>
+        <input type="text" v-model="book.name" placeholder="Name" name="name">
+        <br>
+        <label>Author</label>
+        <input type="text" v-model="book.author" placeholder="Author" name="author">
+        <br>
+        <label>ISBN</label>
+        <input type="text" v-model="book.isbn" placeholder="ISBN" name="isbn">
+        <br>
+        <label>OWNER</label>
+        <select name='owner' v-model="book.owner">
+            <option v-for="row in owners" :value="row['id']"> {{row['name']}}</option>
+        </select>
+        <br>
+        <label>Cover link</label>
+        <input type="text" v-model="book.cover" placeholder="Cover link" name="cover">
+        <br>
+        <input type="submit" @click="editBook" >
+    </form>
+
+
+
+</div>`,
+    methods: {
+        editBook() {
+            console.log(this.book);
+            this.$http.post('/editBook', {book: this.book}).then((response) => {
+                console.log(response);
+                this.$router.push('/')
+            });
+        },
+        getUsers() {
+            this.$http.get('/getUsers').then((response) => {
+                this.owners = response.body
+                this.book.owner = response.body[0].id;
+            });
+        },
+        getBook() {
+            this.$http.get('/book',  {params: {id: this.id}}).then((response) => {
+                this.book = response.body
+            });
+        }
+    },
+    beforeMount(){
+        this.getUsers();
+        this.getBook();
+    }
+})
+
 const routes = [
     { path: '/', component: books },
     { path: '/book/:id', component: book, props: true },
     { path: '/addBook', component: addBook, props: true }
+    { path: '/editBook/:id', component: book, props: true },
 ]
 
 
