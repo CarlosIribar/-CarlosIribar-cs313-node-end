@@ -1,6 +1,6 @@
 const { Pool } = require("pg");
 
-export default function getBooks(request, response) {
+module.exports = function getBooks(request, response) {
 	getBooksFromDb(function (error, result) {
 		if (error || result == null) {
 			response.status(500).json({ success: false, data: error });
