@@ -49,6 +49,10 @@ app.get('/getUsers', function(request, response) {
 	getUsers(request, response);
 });
 
+app.put('/editUser', function(request, response) {
+	editUser(request, response);
+});
+
 
 
 // This function handles requests to the /getPerson endpoint
@@ -123,6 +127,24 @@ function addBook(request, response) {
 	});
 }
 
+function editBook(request, response) {
+	// First get the person's id
+	console.log(request.body);
+	var book = request.body.book
+
+	console.log(book);
+	editBookFromDB(book, function(error, result) {
+		// This is the callback function that will be called when the DB is done.
+		// The job here is just to send it back.
+
+		// Make sure we got a row with the person, then prepare JSON to send back
+		if (error) {
+			response.status(500).json({success: false, data: error});
+		} else {
+			response.status(200).json({success: true, data: 'Element added'});
+		}
+	});
+}
 // This function handles requests to the /getPerson endpoint
 // it expects to have an id on the query string, such as: http://localhost:5000/getPerson?id=1
 function getUsers(request, response) {
@@ -274,6 +296,33 @@ function addBookFromDB(book, callback) {
 	
 
 }
+
+function editBookFromDB(book, callback) {
+	console.log("edit book person from DB with id: " + book.name);
+
+	// Set up the SQL that we will use for our query. Note that we can make
+	const sql = 'UPDATE books set Name=$1, Author=$2, isbn=$3, Cover=$4, userId=$5 WHERE id = $6 ';
+	// We now set up an array of all the parameters we will pass to fill the
+	// placeholder spots we left in the query.
+	var params = [book.name, book.author, book.isbn, book.cover, book.owner, book.id];
+
+	// This runs the query, and then calls the provided anonymous callback function
+	// with the results.
+	pool.query(sql, params, function(err, result) {
+		console.log('editing book')
+		// If an error occurred...
+		if (err) {
+			console.log("Error in query: ")
+			console.log(err);
+			callback(err, null);
+		}
+
+		callback(false, {});
+	});
+	
+
+}
+
 function getUsersFromDb(callback) {
 	console.log("Getting users from DB with ");
   

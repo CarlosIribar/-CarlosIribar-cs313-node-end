@@ -22,7 +22,7 @@ const books = Vue.component('books', {
             <td>{{row['isbn']}}</td>
             <td>{{row['user']}}</td>
             <td><button @click="removeBook(row['id'])"> Remove </button></td>
-            <td><button :to="'/editBook/' + row['id']"> Edit </button></td>
+            <td><router-link :to="'/editBook/' + row['id']">Edit</router-link></td>
         </tr>
         </table>
         </div>`,
