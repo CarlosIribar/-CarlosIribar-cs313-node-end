@@ -200,7 +200,7 @@ const editBook = Vue.component('editBook', {
 const routes = [
     { path: '/', component: books },
     { path: '/book/:id', component: book, props: true },
-    { path: '/addBook', component: addBook, props: true }
+    { path: '/addBook', component: addBook, props: true },
     { path: '/editBook/:id', component: book, props: true },
 ]
 
