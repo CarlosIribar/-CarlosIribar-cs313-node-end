@@ -216,7 +216,7 @@ const addProgress = Vue.component('addProgress', {
         <label>End Date</label>
 			<input type="date" placeholder="End Date" name="end" v-model="progress.end">
         <br>
-        <label>user</label>
+        <label>User</label>
         <select name='user' v-model="progress.user">
             <option v-for="row in owners" :value="row['id']"> {{row['name']}}</option>
         </select>
@@ -239,12 +239,47 @@ const addProgress = Vue.component('addProgress', {
         getUsers() {
             this.$http.get('/getUsers').then((response) => {
                 this.owners = response.body
-                this.book.owner = response.body[0].id;
+                this.progress.user = response.body[0].id;
             });
         }
     },
     beforeMount(){
         this.getUsers();
+    }
+})
+
+const bookProgress = Vue.component('bookProgress', {
+    props: ['id'],
+    data: function () {
+        return {
+            progress: []
+        };
+    },
+    template:`<div>
+            <table>
+            <tr>
+            <th>StartDate</th>
+            <th>EndDate</th>
+            <th>User</th>
+            </tr>
+            <tr v-for="row in progress">
+                <td>row['startdate']</td>
+                <td>row['enddate']</td>
+                <td>row['user']</td>
+            </tr>
+            
+            </table>
+        </div>`,
+    methods: {
+        getProgress() {
+            console.log(this.progress);
+            this.$http.get('/progress', {params: {id: this.id}}).then((response) => {
+                console.log(response.body);
+            });
+        },
+    },
+    beforeMount(){
+        this.getProgress();
     }
 })
 
